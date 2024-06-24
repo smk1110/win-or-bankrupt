@@ -2,40 +2,36 @@ import random
 
 total_times = 0
 success_times = 0
-
-print("To set to default, leave it empty.")
-start = int(input("Enter your start point. : "))
-target = int(input("Enter your target point. : "))
-winning_point = int(input("How many points do you want to get if you win?: "))
-losing_point = int(input("How many points do you want to lose if you lose?: "))
-
-winning_possibility = int(input('''Enter winning possibility. 
-(If you win, you get 1 point, 
-if you lose, you lose 1 point. 
-Set it to an integer between 0 and 100) : ''')) / 100
-
-
 possibility = 0
+value = [0,0,0,0,0]
+
+if input("To set to default, type 'default'. Otherwise, type anything else to set manually : ") == 'default':
+  file = open("default.txt", "r")
+  default_values = [line.rstrip() for line in file]
+  print(default_values)
+  for i in range(0, 5):
+    value[i] = int(default_values[i])
+  value[4] /= 100
+else:
+  value[0] = int(input("Enter your start point. : "))
+  value[1] = int(input("Enter your target point. : "))
+  value[2] = int(input("How many points do you want to get if you win? : "))   
+  value[3] = int(input("How many points do you want to lose if you lose? : "))   
+  value[4] = int(input('Set the odds that you will win (between 0 and 100) : ')) / 100
 while True:
-  balance = start
+  balance = value[0]
   while True:
-    if random.random() < winning_possibility:
-          balance+= winning_point #win
+    if random.random() < value[4]:
+          balance+= value[2] #win
     else:
-      balance -= losing_point #lose
+      balance -= value[3] #lose
     
     if balance <= 0: #bankrupt
       total_times += 1
       break
-    elif balance >= target: #success
+    elif balance >= value[1]: #success
       success_times += 1
       total_times += 1
       break
   possibility = success_times/total_times
   print(possibility)
-
-  
-  
-
-  
-  
